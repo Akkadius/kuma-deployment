@@ -66,10 +66,8 @@ mysql-init: ##@mysql Initialize database
 	docker-compose run --user=root mariadb bash -c "chown -R mysql:mysql /var/lib/mysql && exit"
 	docker-compose up -d mariadb
 	docker-compose exec -T mariadb sh -c 'while ! mysqladmin ping -h "mariadb" --silent; do sleep .5; done'
-	docker-compose exec mariadb sh -c "mysql -h localhost -uroot -p${MYSQL_ROOT_PASSWORD} -e 'CREATE DATABASE IF NOT EXISTS ${MYSQL_EQEMU_DATABASE}'"
-	docker-compose exec mariadb sh -c "mysql -h localhost -uroot -p${MYSQL_ROOT_PASSWORD} -e 'GRANT ALL PRIVILEGES ON ${MYSQL_EQEMU_DATABASE}.* TO \"${MYSQL_USERNAME}\"@\"%\"'"
-	docker-compose exec mariadb sh -c "mysql -h localhost -uroot -p${MYSQL_ROOT_PASSWORD} -e 'CREATE DATABASE IF NOT EXISTS ${MYSQL_SPIRE_DATABASE}';"
-	docker-compose exec mariadb sh -c "mysql -h localhost -uroot -p${MYSQL_ROOT_PASSWORD} -e 'GRANT ALL PRIVILEGES ON ${MYSQL_SPIRE_DATABASE}.* TO \"${MYSQL_USERNAME}\"@\"%\"'"
+	docker-compose exec mariadb sh -c "mysql -h localhost -uroot -p${MARIADB_ROOT_PASSWORD} -e 'CREATE DATABASE IF NOT EXISTS ${MARIADB_DATABASE}'"
+	docker-compose exec mariadb sh -c "mysql -h localhost -uroot -p${MARIADB_ROOT_PASSWORD} -e 'GRANT ALL PRIVILEGES ON ${MARIADB_DATABASE}.* TO \"${MARIADB_USER}\"@\"%\"'"
 
 init-strip-mysql-remote-root: ##@mysql Strips MySQL remote root user
-	docker-compose exec mariadb bash -c "mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h localhost -e \"delete from mysql.user where User = 'root' and Host = '%'; FLUSH PRIVILEGES\""
+	docker-compose exec mariadb bash -c "mysql -uroot -p${MARIADB_ROOT_PASSWORD} -h localhost -e \"delete from mysql.user where User = 'root' and Host = '%'; FLUSH PRIVILEGES\""
