@@ -60,7 +60,6 @@ help: ##@other Show this help.
 #----------------------
 
 mysql-init: ##@mysql Initialize database
-	@./scripts/banner.sh "Initializing MySQL Database..."
 	$(COMPOSE_COMMAND) kill mysql
 	$(COMPOSE_COMMAND) build mysql
 	$(COMPOSE_COMMAND) up -d mysql
