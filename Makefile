@@ -60,16 +60,16 @@ help: ##@other Show this help.
 #----------------------
 
 mysql-init: ##@mysql Initialize database
-	$(COMPOSE_COMMAND) kill mysql
-	$(COMPOSE_COMMAND) build mysql
-	$(COMPOSE_COMMAND) up -d mysql
-	$(DRUNPREFIX) $(COMPOSE_COMMAND) run --user=root mysql bash -c "chown -R mysql:mysql /var/lib/mysql && exit"
-	$(COMPOSE_COMMAND) up -d mysql
-	$(DRUNPREFIX) $(COMPOSE_COMMAND) exec -T mysql sh -c 'while ! mysqladmin ping -h "mysql" --silent; do sleep .5; done'
-	$(DRUNPREFIX) $(COMPOSE_COMMAND) exec mysql sh -c "mysql -h localhost -uroot -p${MYSQL_ROOT_PASSWORD} -e 'CREATE DATABASE IF NOT EXISTS ${MYSQL_EQEMU_DATABASE}'"
-	$(DRUNPREFIX) $(COMPOSE_COMMAND) exec mysql sh -c "mysql -h localhost -uroot -p${MYSQL_ROOT_PASSWORD} -e 'GRANT ALL PRIVILEGES ON ${MYSQL_EQEMU_DATABASE}.* TO \"${MYSQL_USERNAME}\"@\"%\"'"
-	$(DRUNPREFIX) $(COMPOSE_COMMAND) exec mysql sh -c "mysql -h localhost -uroot -p${MYSQL_ROOT_PASSWORD} -e 'CREATE DATABASE IF NOT EXISTS ${MYSQL_SPIRE_DATABASE}';"
-	$(DRUNPREFIX) $(COMPOSE_COMMAND) exec mysql sh -c "mysql -h localhost -uroot -p${MYSQL_ROOT_PASSWORD} -e 'GRANT ALL PRIVILEGES ON ${MYSQL_SPIRE_DATABASE}.* TO \"${MYSQL_USERNAME}\"@\"%\"'"
+	docker-compose kill mysql
+	docker-compose build mysql
+	docker-compose up -d mysql
+	docker-compose run --user=root mysql bash -c "chown -R mysql:mysql /var/lib/mysql && exit"
+	docker-compose up -d mysql
+	docker-compose exec -T mysql sh -c 'while ! mysqladmin ping -h "mysql" --silent; do sleep .5; done'
+	docker-compose exec mysql sh -c "mysql -h localhost -uroot -p${MYSQL_ROOT_PASSWORD} -e 'CREATE DATABASE IF NOT EXISTS ${MYSQL_EQEMU_DATABASE}'"
+	docker-compose exec mysql sh -c "mysql -h localhost -uroot -p${MYSQL_ROOT_PASSWORD} -e 'GRANT ALL PRIVILEGES ON ${MYSQL_EQEMU_DATABASE}.* TO \"${MYSQL_USERNAME}\"@\"%\"'"
+	docker-compose exec mysql sh -c "mysql -h localhost -uroot -p${MYSQL_ROOT_PASSWORD} -e 'CREATE DATABASE IF NOT EXISTS ${MYSQL_SPIRE_DATABASE}';"
+	docker-compose exec mysql sh -c "mysql -h localhost -uroot -p${MYSQL_ROOT_PASSWORD} -e 'GRANT ALL PRIVILEGES ON ${MYSQL_SPIRE_DATABASE}.* TO \"${MYSQL_USERNAME}\"@\"%\"'"
 
 init-strip-mysql-remote-root: ##@mysql Strips MySQL remote root user
-	$(DRUNPREFIX) $(COMPOSE_COMMAND) exec mysql bash -c "mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h localhost -e \"delete from mysql.user where User = 'root' and Host = '%'; FLUSH PRIVILEGES\""
+	docker-compose exec mysql bash -c "mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h localhost -e \"delete from mysql.user where User = 'root' and Host = '%'; FLUSH PRIVILEGES\""
