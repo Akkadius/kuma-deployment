@@ -42,14 +42,14 @@ services:
     labels:
       - "traefik.enable=true"
       # http
-      - "traefik.http.routers.status-http.rule=Host(`${DOMAIN_NAME}`)"
+      - "traefik.http.routers.status-http.rule=Host(`${DOMAIN}`)"
       - "traefik.http.routers.status-http.entrypoints=web"
       - "traefik.http.routers.status-http.service=status-http"
       - "traefik.http.services.status-http.loadbalancer.server.port=3001"
       - "traefik.http.routers.status-http.middlewares=status-https"
       - "traefik.http.middlewares.status-https.redirectscheme.scheme=https"
       # https
-      - "traefik.http.routers.status-https.rule=Host(`${DOMAIN_NAME}`)"
+      - "traefik.http.routers.status-https.rule=Host(`${DOMAIN}`)"
       - "traefik.http.routers.status-https.entrypoints=websecure"
       - "traefik.http.routers.status-https.tls.certresolver=le"
       - "traefik.http.routers.status-https.service=status-https"
