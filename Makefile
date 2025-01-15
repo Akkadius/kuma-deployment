@@ -65,7 +65,7 @@ mysql-init: ##@mysql Initialize database
 	docker-compose up -d mariadb
 	docker-compose run --user=root mariadb bash -c "chown -R mysql:mysql /var/lib/mysql && exit"
 	docker-compose up -d mariadb
-	docker-compose exec -T mariadb sh -c 'while ! mysqladmin ping -h "mysql" --silent; do sleep .5; done'
+	docker-compose exec -T mariadb sh -c 'while ! mysqladmin ping -h "mariadb" --silent; do sleep .5; done'
 	docker-compose exec mariadb sh -c "mysql -h localhost -uroot -p${MYSQL_ROOT_PASSWORD} -e 'CREATE DATABASE IF NOT EXISTS ${MYSQL_EQEMU_DATABASE}'"
 	docker-compose exec mariadb sh -c "mysql -h localhost -uroot -p${MYSQL_ROOT_PASSWORD} -e 'GRANT ALL PRIVILEGES ON ${MYSQL_EQEMU_DATABASE}.* TO \"${MYSQL_USERNAME}\"@\"%\"'"
 	docker-compose exec mariadb sh -c "mysql -h localhost -uroot -p${MYSQL_ROOT_PASSWORD} -e 'CREATE DATABASE IF NOT EXISTS ${MYSQL_SPIRE_DATABASE}';"
