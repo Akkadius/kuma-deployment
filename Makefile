@@ -73,4 +73,4 @@ init-strip-mysql-remote-root: ##@mysql Strips MySQL remote root user
 	docker-compose exec mariadb bash -c "mysql -uroot -p${MARIADB_ROOT_PASSWORD} -h localhost -e \"delete from mysql.user where User = 'root' and Host = '%'; FLUSH PRIVILEGES\""
 
 mc: ##@dev Create MySQL shell
-	docker-compose exec mariadb sh -c "mysql -uroot -p${MYSQL_ROOT_PASSWORD} -h localhost"
+	docker-compose exec mariadb sh -c "mysql -uroot -p${MARIADB_ROOT_PASSWORD} -h localhost"
